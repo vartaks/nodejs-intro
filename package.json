@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-intro",
+  "version": "1.0.0",
+  "description": "Introduction to NodeJS",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vartaks/nodejs-intro.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sourabh Vartak",
+  "license": "ISC"
+}
