@@ -4,11 +4,11 @@ http.createServer(function (request, response) {
 
    // Send the HTTP header 
    // HTTP Status: 200 : OK
-   // Content Type: text/plain
-   response.writeHead(200, {'Content-Type': 'text/plain'});
+   // Content Type: text/html
+   response.writeHead(200, {'Content-Type': 'text/html'});
    
    // Send the response body as "Hello World"
-   response.end('Hello World\n');
+   response.end('<h2>Hello World<br/>\nWelcome to Sample NodeJS Server</h2>');
 }).listen(8081);
 
 // Console will print the message
