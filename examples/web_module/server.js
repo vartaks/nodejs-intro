@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
+var mw = require('./sourabh-middleware');
 
 // Create a server
 http.createServer( function (request, response) {  
@@ -22,9 +23,12 @@ http.createServer( function (request, response) {
          // HTTP Status: 200 : OK
          // Content Type: text/plain
          response.writeHead(200, {'Content-Type': 'text/html'});	
-         
+
+         // Call middleware to parse the embedded expressions in the HTML template
+         var output = mw.parse(data.toString());
+
          // Write the content of the file to response body
-         response.write(data.toString());		
+         response.write(output);		
       }
       // Send the response body 
       response.end();

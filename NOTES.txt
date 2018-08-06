@@ -1,0 +1,34 @@
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$ npm install express --save
++ express@4.16.3
+added 50 packages in 6.901s
+
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$ ls -a node_modules/
+./        array-flatten/        content-type/      depd/       escape-html/   forwarded/    inherits/           methods/     ms/           path-to-regexp/  raw-body/      setprototypeof/  utils-merge/
+../       body-parser/          cookie/            destroy/    etag/          fresh/        ipaddr.js/          mime/        negotiator/   proxy-addr/      safe-buffer/   statuses/        vary/
+.bin/     bytes/                cookie-signature/  ee-first/   express/       http-errors/  media-typer/        mime-db/     on-finished/  qs/              send/          type-is/
+accepts/  content-disposition/  debug/             encodeurl/  finalhandler/  iconv-lite/   merge-descriptors/  mime-types/  parseurl/     range-parser/    serve-static/  unpipe/
+
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$ npm install body-parser --save
++ body-parser@1.18.3
+added 5 packages, updated 3 packages and moved 3 packages in 1.518s
+
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$ npm install cookie-parser --save
++ cookie-parser@1.4.3
+added 1 package in 0.946s
+
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$ npm install multer --save
++ multer@1.3.1
+added 21 packages in 2.769s
+
+e10111477@MUM22500 MINGW64 /c/Users/e10111477/Learning/Nodejs/nodejs-intro (master)
+$
+
+
+EXAMPLES AT https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
+
+REST EXAMPLES AT https://www.tutorialspoint.com/nodejs/nodejs_restful_api.htm
