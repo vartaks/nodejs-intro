@@ -1,4 +1,4 @@
-var os = require("os");
+const os = require("os");
 
 var scale = function (number, factor, decimalPlaces) {
     return (number / factor).toFixed(decimalPlaces);
