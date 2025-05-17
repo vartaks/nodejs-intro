@@ -18,3 +18,10 @@ This version will:
 * Stream each line as an RxJS Observable
 * Transform the stream (e.g., to uppercase)
 * Handle errors and completion
+
+What’s New in This Version:
+RxJS's from(): turns an array of lines into an observable stream.
+concatMap() + delay(): adds artificial async behavior.
+map(): transforms each line.
+catchError(): handles stream-level errors.
+subscribe(): defines how to react to each item, errors, and completion.
