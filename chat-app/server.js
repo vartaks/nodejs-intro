@@ -3,6 +3,7 @@ const fs = require('fs');
 const { fromEvent, of } = require('rxjs');
 const { mergeMap, catchError } = require('rxjs/operators');
 
+const ADMIN_PASSWORD = 'admin123'; // You can change this to any password you want
 const clients = new Map(); // socket => nickname
 const muted = new Set();   // nicknames that are muted
 let adminSocket = null;
@@ -31,10 +32,6 @@ const server = net.createServer(socket => {
         }
 
         clients.set(socket, msg);
-        if (!adminSocket) {
-          adminSocket = socket;
-          socket.write('[ADMIN] You are the admin.\n');
-        }
 
         nicknameSet = true;
         socket.write(`Hi ${msg}! You can now chat. Type 'exit' to leave.\n`);
@@ -54,6 +51,18 @@ const server = net.createServer(socket => {
       if (msg.toLowerCase() === '/list') {
         const users = [...clients.values()].join(', ');
         socket.write(`Online users: ${users}\n`);
+        return;
+      }
+
+      // Admin login
+      if (msg.startsWith('/admin ')) {
+        const password = msg.split(' ')[1];
+        if (password === ADMIN_PASSWORD) {
+            adminSocket = socket;
+            socket.write('[ADMIN] You are now the admin.\n');
+        } else {
+            socket.write('Incorrect admin password.\n');
+        }
         return;
       }
 

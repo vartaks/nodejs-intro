@@ -132,3 +132,12 @@ Command Summary:
 /unmute <nickname> — restore voice [Admin only]
 exit — leave the chat
 ---------------------------------------------------------------------------------------------
+
+Password-Based Admin Login
+We'll require a password (e.g. "admin123") for admin privileges, instead of auto-assigning to the first user.
+
+How It Works:
+* Admin types: /admin <password>
+* If correct, they gain admin rights
+* Everyone else remains a regular user
+---------------------------------------------------------------------------------------------
