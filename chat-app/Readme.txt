@@ -46,3 +46,24 @@ Why RxJS here?
 * fromEvent() cleanly converts socket events to an observable stream.
 * map() and mergeMap() make it easy to transform and delay responses.
 * catchError() ensures graceful error handling per stream.
+---------------------------------------------------------------------------------------------
+
+Here's a RxJS-powered TCP chat server in Node.js that:
+* Accepts multiple client connections
+* Uses RxJS to handle and transform messages
+* Broadcasts messages to all connected clients (except the sender)
+* Gracefully handles disconnects and errors
+
+How to Use It:
+1. Run the server:
+node chat-server.js
+2. Open multiple terminals and connect using telnet:
+telnet localhost 3000
+3. Type a message in one terminal — it broadcasts to others.
+4. Type exit to disconnect a client.
+
+Key Features:
+* Uses fromEvent to turn socket events into observable streams.
+* Uses mergeMap + map to transform message content.
+* Set stores connected clients for broadcast.
+* Gracefully handles disconnects and errors.
