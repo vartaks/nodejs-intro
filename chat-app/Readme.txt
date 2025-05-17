@@ -39,7 +39,7 @@ Scenario:
 How to test it:
 1. Run the server (node server.js).
 2. Connect using netcat or telnet:
-"nc localhost 3000" OR "telnet localhost 3000"
+"ncat localhost 3000" OR "telnet localhost 3000"
 3. Type messages — you'll see them processed and echoed back in uppercase.
 
 Why RxJS here?
@@ -56,9 +56,9 @@ Here's a RxJS-powered TCP chat server in Node.js that:
 
 How to Use It:
 1. Run the server:
-node chat-server.js
-2. Open multiple terminals and connect using telnet:
-telnet localhost 3000
+node server.js
+2. Open multiple terminals and connect using netcat:
+ncat localhost 3000
 3. Type a message in one terminal — it broadcasts to others.
 4. Type exit to disconnect a client.
 
@@ -67,3 +67,21 @@ Key Features:
 * Uses mergeMap + map to transform message content.
 * Set stores connected clients for broadcast.
 * Gracefully handles disconnects and errors.
+---------------------------------------------------------------------------------------------
+
+Let’s enhance the chat server with new features:
+1. Nicknames: Each user picks a name when they join.
+2. Message logging: All messages are logged to a file (chat.log).
+
+How It Works:
+* When a client connects, they enter a nickname.
+* Nicknames must be unique.
+* Messages are broadcasted to all other users.
+* Every message is logged with a timestamp to chat.log.
+* Typing exit disconnects the user.
+
+To Test:
+1. Run the server: node server.js
+2. In separate terminals:
+ncat localhost 3000
+3. Try entering same and different nicknames, chatting, and typing exit.
