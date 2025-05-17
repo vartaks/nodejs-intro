@@ -25,3 +25,24 @@ concatMap() + delay(): adds artificial async behavior.
 map(): transforms each line.
 catchError(): handles stream-level errors.
 subscribe(): defines how to react to each item, errors, and completion.
+---------------------------------------------------------------------------------------------
+
+Let’s extend the example to handle real-time data using sockets in Node.js, 
+and process it with RxJS Observables for transformation and control.
+
+Scenario:
+* We'll set up a TCP server using Node's net module.
+* Clients can connect and send data.
+* Data from clients will be streamed as observables.
+* Each message will be transformed (e.g., to uppercase) and logged.
+
+How to test it:
+1. Run the server (node server.js).
+2. Connect using netcat or telnet:
+"nc localhost 3000" OR "telnet localhost 3000"
+3. Type messages — you'll see them processed and echoed back in uppercase.
+
+Why RxJS here?
+* fromEvent() cleanly converts socket events to an observable stream.
+* map() and mergeMap() make it easy to transform and delay responses.
+* catchError() ensures graceful error handling per stream.
