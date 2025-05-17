@@ -1,9 +1,12 @@
 const net = require('net');
 const fs = require('fs');
 const { fromEvent, of } = require('rxjs');
-const { map, mergeMap, catchError } = require('rxjs/operators');
+const { mergeMap, catchError } = require('rxjs/operators');
 
 const clients = new Map(); // socket => nickname
+const muted = new Set();   // nicknames that are muted
+let adminSocket = null;
+
 const logStream = fs.createWriteStream('chat.log', { flags: 'a' });
 
 const server = net.createServer(socket => {
@@ -26,58 +29,101 @@ const server = net.createServer(socket => {
           socket.write('Invalid or duplicate nickname. Try another:\n');
           return;
         }
+
         clients.set(socket, msg);
+        if (!adminSocket) {
+          adminSocket = socket;
+          socket.write('[ADMIN] You are the admin.\n');
+        }
+
         nicknameSet = true;
         socket.write(`Hi ${msg}! You can now chat. Type 'exit' to leave.\n`);
         broadcast(`${msg} has joined the chat.`, socket);
         return;
       }
 
+      const nickname = clients.get(socket);
+
+      // Exit command
       if (msg.toLowerCase() === 'exit') {
         socket.end('Goodbye!\n');
         return;
       }
 
+      // List command
       if (msg.toLowerCase() === '/list') {
         const users = [...clients.values()].join(', ');
         socket.write(`Online users: ${users}\n`);
         return;
       }
 
-      if (msg.toLowerCase().startsWith('/msg ')) {
+      // Admin-only: /kick
+      if (msg.startsWith('/kick ')) {
+        if (socket !== adminSocket) return socket.write('Only admin can kick users.\n');
+        const targetName = msg.split(' ')[1];
+        const targetSocket = [...clients.entries()].find(([_, name]) => name === targetName)?.[0];
+        if (!targetSocket) return socket.write(`User ${targetName} not found.\n`);
+        targetSocket.write('You have been kicked by the admin.\n');
+        targetSocket.end();
+        return;
+      }
+
+      // Admin-only: /mute
+      if (msg.startsWith('/mute ')) {
+        if (socket !== adminSocket) return socket.write('Only admin can mute users.\n');
+        const targetName = msg.split(' ')[1];
+        if ([...clients.values()].includes(targetName)) {
+          muted.add(targetName);
+          broadcast(`${targetName} has been muted by the admin.`);
+          return;
+        }
+        return socket.write(`User ${targetName} not found.\n`);
+      }
+
+      // Admin-only: /unmute
+      if (msg.startsWith('/unmute ')) {
+        if (socket !== adminSocket) return socket.write('Only admin can unmute users.\n');
+        const targetName = msg.split(' ')[1];
+        if (muted.has(targetName)) {
+          muted.delete(targetName);
+          broadcast(`${targetName} has been unmuted by the admin.`);
+          return;
+        }
+        return socket.write(`User ${targetName} is not muted.\n`);
+      }
+
+      // Private message
+      if (msg.startsWith('/msg ')) {
         const parts = msg.split(' ');
         const recipientName = parts[1];
         const privateMsg = parts.slice(2).join(' ');
-
         const recipientSocket = [...clients.entries()].find(([_, name]) => name === recipientName)?.[0];
-
-        if (!recipientSocket) {
-          socket.write(`User "${recipientName}" not found.\n`);
-          return;
-        }
-
-        const senderName = clients.get(socket);
-        const formatted = `[Private] ${senderName} to ${recipientName}: ${privateMsg}`;
+        if (!recipientSocket) return socket.write(`User ${recipientName} not found.\n`);
+        const formatted = `[Private] ${nickname} to ${recipientName}: ${privateMsg}`;
         recipientSocket.write(`${formatted}\n`);
         socket.write(`(to ${recipientName}): ${privateMsg}\n`);
         logMessage(formatted);
         return;
       }
 
-      // Default: broadcast
-      const nickname = clients.get(socket);
+      // Muted check
+      if (muted.has(nickname)) {
+        socket.write('You are muted and cannot send messages.\n');
+        return;
+      }
+
+      // Broadcast
       const message = `[${nickname}] ${msg}`;
       broadcast(message, socket);
       logMessage(message);
-    },
-    error: err => {
-      console.error('Client stream error:', err);
     }
   });
 
   socket.on('end', () => {
     const name = clients.get(socket) || 'Unknown';
+    if (socket === adminSocket) adminSocket = null;
     clients.delete(socket);
+    muted.delete(name);
     broadcast(`${name} has left the chat.`);
     logMessage(`${name} disconnected.`);
   });
@@ -89,7 +135,7 @@ const server = net.createServer(socket => {
 });
 
 function broadcast(message, senderSocket = null) {
-  for (let [client, _] of clients.entries()) {
+  for (let [client] of clients.entries()) {
     if (client !== senderSocket) {
       client.write(`${message}\n`);
     }
@@ -103,5 +149,5 @@ function logMessage(message) {
 }
 
 server.listen(3000, () => {
-  console.log('Chat server with broadcast, /msg, and /list running on port 3000');
+  console.log('Chat server with admin, private messages, mute/kick/list running on port 3000');
 });

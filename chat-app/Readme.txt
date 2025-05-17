@@ -109,3 +109,26 @@ Example: /msg Alice hey there!
 * List users: /list
 * Exit chat: exit
 * Logging to chat.log
+---------------------------------------------------------------------------------------------
+
+Let’s add admin commands to the chat server, specifically:
+
+New Admin Features:
+/kick <nickname> — Forcefully disconnects a user.
+/mute <nickname> — Prevents a user from sending messages.
+/unmute <nickname> — Allows a muted user to speak again.
+
+We'll keep: Broadcasts, Private messages, User listing, Logging and Nicknames
+
+Admin Rules:
+* The first connected user becomes the admin.
+* Only the admin can run /kick, /mute, or /unmute.
+
+Command Summary:
+/list — list all users
+/msg <nickname> <message> — send private message
+/kick <nickname> — remove a user [Admin only]
+/mute <nickname> — silence a user [Admin only]
+/unmute <nickname> — restore voice [Admin only]
+exit — leave the chat
+---------------------------------------------------------------------------------------------
