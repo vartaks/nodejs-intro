@@ -1,31 +1,26 @@
-
-
-
 JavaScript (JS) Engines:
 Microsoft Edge - Chakra
 Mozilla Firefox - SpiderMonkey
 Google Chrome - v8
 
-Browsers provide runtime environment to manipulate DOM (Document Object Model)
-with functions like document.getElementById('');
+Browsers provide runtime environment to manipulate DOM (Document Object Model) with functions like document.getElementById('');
 
-In 2009 Ryan Dahl took Google Chrome v8 JS engine and embedded it in C++ program to create Node.exe
+In 2009, Ryan Dahl took Google Chrome v8 JS engine and embedded it in C++ program to create Node.exe
 
 Node is a runtime environment to execute JS code outside of any web browser.
 This environment does not have objects and functions to manipulate DOM like window and document objects.
-But Node has different functions like fs.readFile() and http.createServer() to work with the file system, network, etc.
+But, Node has different functions like fs.readFile() and http.createServer() to work with the file system, network, etc.
 
 Node is NOT a programming language like C#, Ruby or Python.
 Node is NOT a framework like ASP.NET, Rails or Django.
 It's a runtime environment for executing JavaScript code.
 
-Non-blocking and asynchronous nature of Node
-
+Non-blocking and asynchronous nature of Node:
 Node handles multiple requests simultaneously using event queue.
 Node is ideal for IO-intensive apps.
 Node should NOT be used for CPU-intensive apps like video encoding and image manipulation service.
 
-Node has modules like os, fs, path, events and http
+Node has modules like os, fs, path, events and http.
 
 Global node functions:
 1. console.log()
@@ -34,11 +29,7 @@ Global node functions:
 4. setInterval()
 5. clearInterval()
 
-Node has global object and module object
+Node has global object and module object.
 
 Since Node is an asynchronous event-driven JavaScript runtime, 
 EventEmitter class in events module is one of the core building blocks of Node.
-
-
-
-
