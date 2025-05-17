@@ -38,6 +38,12 @@ const server = net.createServer(socket => {
         return;
       }
 
+      if (msg.toLowerCase() === '/list') {
+        const users = [...clients.values()].join(', ');
+        socket.write(`Online users: ${users}\n`);
+        return;
+      }
+
       const nickname = clients.get(socket);
       const message = `[${nickname}] ${msg}`;
       broadcast(message, socket);
@@ -62,7 +68,7 @@ const server = net.createServer(socket => {
 });
 
 function broadcast(message, senderSocket = null) {
-  for (let [client, name] of clients.entries()) {
+  for (let [client, _] of clients.entries()) {
     if (client !== senderSocket) {
       client.write(`${message}\n`);
     }
@@ -76,5 +82,5 @@ function logMessage(message) {
 }
 
 server.listen(3000, () => {
-  console.log('Enhanced chat server running on port 3000');
+  console.log('Chat server with /list command running on port 3000');
 });

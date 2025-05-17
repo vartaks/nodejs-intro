@@ -85,3 +85,15 @@ To Test:
 2. In separate terminals:
 ncat localhost 3000
 3. Try entering same and different nicknames, chatting, and typing exit.
+---------------------------------------------------------------------------------------------
+
+Let’s add a /list command that lets users see who’s currently online.
+
+Updated Feature Set:
+* /list: Shows all connected users.
+* Keeps all previous features: nicknames, message logging, broadcasting, exit.
+
+Usage in Chat:
+* /list — See who is online.
+* exit — Disconnect from the server.
+* Any other message — Broadcasted to all.
