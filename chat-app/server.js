@@ -44,6 +44,27 @@ const server = net.createServer(socket => {
         return;
       }
 
+      if (msg.toLowerCase().startsWith('/msg ')) {
+        const parts = msg.split(' ');
+        const recipientName = parts[1];
+        const privateMsg = parts.slice(2).join(' ');
+
+        const recipientSocket = [...clients.entries()].find(([_, name]) => name === recipientName)?.[0];
+
+        if (!recipientSocket) {
+          socket.write(`User "${recipientName}" not found.\n`);
+          return;
+        }
+
+        const senderName = clients.get(socket);
+        const formatted = `[Private] ${senderName} to ${recipientName}: ${privateMsg}`;
+        recipientSocket.write(`${formatted}\n`);
+        socket.write(`(to ${recipientName}): ${privateMsg}\n`);
+        logMessage(formatted);
+        return;
+      }
+
+      // Default: broadcast
       const nickname = clients.get(socket);
       const message = `[${nickname}] ${msg}`;
       broadcast(message, socket);
@@ -82,5 +103,5 @@ function logMessage(message) {
 }
 
 server.listen(3000, () => {
-  console.log('Chat server with /list command running on port 3000');
+  console.log('Chat server with broadcast, /msg, and /list running on port 3000');
 });

@@ -97,3 +97,15 @@ Usage in Chat:
 * /list — See who is online.
 * exit — Disconnect from the server.
 * Any other message — Broadcasted to all.
+---------------------------------------------------------------------------------------------
+
+Let’s add private messaging with the /msg command while keeping broadcast functionality.
+
+Features Now Include:
+* Broadcast to all users (default behavior).
+Just type and press enter.
+* Private messaging: /msg <nickname> <message>
+Example: /msg Alice hey there!
+* List users: /list
+* Exit chat: exit
+* Logging to chat.log
