@@ -9,3 +9,12 @@ What it demonstrates:
 * Error handling using try...catch.
 
 To test it, create a simple sample.txt file in the same directory with some text lines.
+---------------------------------------------------------------------------------------------
+
+Let’s add RxJS Observables into the mix. 
+This version will:
+* Read a file asynchronously (fs.promises)
+* Emit start/end events with EventEmitter
+* Stream each line as an RxJS Observable
+* Transform the stream (e.g., to uppercase)
+* Handle errors and completion

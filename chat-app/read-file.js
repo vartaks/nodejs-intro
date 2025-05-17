@@ -1,42 +1,47 @@
 const fs = require('fs').promises;
 const EventEmitter = require('events');
+const { from, of } = require('rxjs');
+const { map, delay, concatMap, catchError } = require('rxjs/operators');
 
-// 1. Custom EventEmitter
+// Event emitter setup
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 
-// 2. Async Generator to simulate data streaming
-async function* lineStreamer(lines) {
-  for (const line of lines) {
-    // Simulate delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    yield line.toUpperCase(); // Transform data
-  }
+// RxJS observable pipeline
+function streamLinesRxJS(lines) {
+  return from(lines).pipe(
+    concatMap(line => of(line).pipe(delay(500))), // simulate async delay
+    map(line => line.toUpperCase()),              // transform line
+    catchError(err => {
+      console.error('Stream error:', err);
+      return of('ERROR OCCURRED');
+    })
+  );
 }
 
-// 3. Main async function using async/await
-async function processFile() {
+// Main async function
+async function processFileRxJS() {
   try {
-    // Read file using Promise (async/await)
     const data = await fs.readFile('sample.txt', 'utf-8');
     const lines = data.split('\n');
 
-    // Emit custom event
     myEmitter.emit('start', lines.length);
 
-    // Use async iterator to stream transformed data
-    for await (const line of lineStreamer(lines)) {
-      console.log('Processed line:', line);
-    }
+    const observable = streamLinesRxJS(lines);
 
-    myEmitter.emit('end');
+    // Subscribe to observable
+    observable.subscribe({
+      next: line => console.log('Processed:', line),
+      complete: () => myEmitter.emit('end'),
+      error: err => console.error('Unhandled error:', err)
+    });
 
   } catch (err) {
-    console.error('Error:', err);
+    console.error('File read error:', err);
   }
 }
 
-// 4. Listen to events
+// Event listeners
 myEmitter.on('start', count => {
   console.log(`Started processing ${count} lines.`);
 });
@@ -46,4 +51,4 @@ myEmitter.on('end', () => {
 });
 
 // Run it
-processFile();
+processFileRxJS();
