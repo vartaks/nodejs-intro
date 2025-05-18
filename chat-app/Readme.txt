@@ -112,3 +112,17 @@ How It Works:
 * If correct, they gain admin rights
 * Everyone else remains a regular user
 ---------------------------------------------------------------------------------------------
+
+Instead of using netcat, users can connect via a web browser.
+
+Steps:
+1. Use ws module for WebSocket support
+2. Serve a simple HTML chat client
+3. Handle WebSocket events like message, open, close
+
+To Test:
+1. Run the server: node server.js
+2. Open browser: http://localhost:3000
+3. Try:
+/admin admin123 to become admin
+/list, /msg, /kick, etc.

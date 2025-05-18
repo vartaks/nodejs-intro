@@ -1,0 +1,30 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+</head>
+<body>
+  <h2>NodeJS Chat</h2>
+  <div id="chat"></div>
+  <input id="input" placeholder="Type here..." autofocus autocomplete="off"/>
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+
+    socket.onmessage = e => {
+      const msg = document.createElement('div');
+      msg.textContent = e.data;
+      chat.appendChild(msg);
+    };
+
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        socket.send(input.value);
+        input.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
