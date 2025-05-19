@@ -44,6 +44,15 @@ body {
   font-size: 14px;
 }
 
+#user-list li.me {
+  font-weight: bold;
+  color: #4caf50;
+}
+
+#user-list li.me::before {
+  content: '🟢 ';
+}
+
 .chat-container {
   flex: 1;
   display: flex;

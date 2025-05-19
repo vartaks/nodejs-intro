@@ -3,11 +3,18 @@ const chat = document.getElementById('chat');
 const input = document.getElementById('input');
 const userList = document.getElementById('user-list');
 
+let nickname = null;
+
 function appendMessage(text) {
   const msg = document.createElement('div');
   msg.textContent = text;
   chat.appendChild(msg);
   chat.scrollTop = chat.scrollHeight;
+
+  // Detect nickname assignment from server response
+  if (!nickname && text.startsWith('Welcome ')) {
+    nickname = text.split(' ')[1].split('!')[0];
+  }
 }
 
 socket.onmessage = e => {
@@ -19,7 +26,10 @@ socket.onmessage = e => {
     userList.innerHTML = '';
     names.forEach(name => {
       const li = document.createElement('li');
-      li.textContent = name;
+      li.textContent = name === nickname ? `${name} (you)` : name;
+      if (name === nickname) {
+        li.classList.add('me'); // highlight class
+      }
       userList.appendChild(li);
     });
   } else {
