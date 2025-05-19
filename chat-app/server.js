@@ -50,6 +50,7 @@ wss.on('connection', socket => {
       clients.set(socket, nickname);
       socket.send(`Welcome ${nickname}! Use /list, /msg, /admin, /mute, /kick, etc.`);
       broadcast(`${nickname} joined the chat`, socket);
+      broadcastUserList();
       return;
     }
 
@@ -134,6 +135,7 @@ wss.on('connection', socket => {
     muted.delete(nickname);
     if (socket === adminSocket) adminSocket = null;
     broadcast(`${nickname} has left the chat.`);
+    broadcastUserList();
     logMessage(`${nickname} disconnected.`);
   });
 });
@@ -145,6 +147,15 @@ function broadcast(message, except) {
     }
   }
   console.log(message);
+}
+
+function broadcastUserList() {
+  const users = [...clients.values()].join(',');
+  for (let client of wss.clients) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(`[USERS] ${users}`);
+    }
+  }
 }
 
 function logMessage(msg) {

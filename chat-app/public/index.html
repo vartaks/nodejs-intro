@@ -6,10 +6,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="chat-container">
+  <div class="chat-wrapper">
+    <div class="sidebar">
+      <h3>Online Users</h3>
+      <ul id="user-list"></ul>
+    </div>
+    <div class="chat-container">
     <header>Chat-o-Chat</header>
-    <div id="chat" class="chat-box"></div>
-    <input id="input" placeholder="Type a message..." autofocus />
+      <div id="chat" class="chat-box"></div>
+      <input id="input" placeholder="Type a message..." autofocus />
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
