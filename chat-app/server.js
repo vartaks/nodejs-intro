@@ -9,13 +9,26 @@ const ADMIN_PASSWORD = 'admin123';
 let adminSocket = null;
 const muted = new Set();
 
-// Serve HTML client
+const mimeTypes = {
+  '.html': 'text/html',
+  '.css':  'text/css',
+  '.js':   'application/javascript',
+};
+
 const server = http.createServer((req, res) => {
-  if (req.url === '/') {
-    const file = fs.readFileSync(path.join(__dirname, 'public', 'index.html'));
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(file);
-  }
+  let filePath = path.join(__dirname, 'public', req.url === '/' ? 'index.html' : req.url);
+  const ext = path.extname(filePath);
+  const contentType = mimeTypes[ext] || 'text/plain';
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.writeHead(404);
+      res.end('File not found');
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(content);
+  });
 });
 
 const wss = new WebSocket.Server({ server });
