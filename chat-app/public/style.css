@@ -32,6 +32,17 @@ body {
   text-align: center;
 }
 
+.user-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+#user-count {
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
 #user-list {
   list-style: none;
   padding: 0;

@@ -24,6 +24,11 @@ socket.onmessage = e => {
   if (message.startsWith('[USERS]')) {
     const names = message.replace('[USERS]', '').trim().split(',');
     userList.innerHTML = '';
+
+    // 🟢 Update count
+    document.getElementById('user-count').textContent = `${names.length} user${names.length !== 1 ? 's' : ''} online`;
+
+    // 🟢 Update list
     names.forEach(name => {
       const li = document.createElement('li');
       li.textContent = name === nickname ? `${name} (you)` : name;
